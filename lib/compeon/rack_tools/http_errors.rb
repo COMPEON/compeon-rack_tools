@@ -1,3 +1,5 @@
+require 'rack'
+
 module Compeon
   module RackTools
     HTTPError = Class.new(StandardError)
