@@ -1,0 +1,7 @@
+require 'compeon/rack_tools/pipes/attribute_extractor'
+require 'compeon/rack_tools/pipes/lint_jsonapi_request'
+require 'compeon/rack_tools/pipes/log'
+require 'compeon/rack_tools/pipes/parse_body'
+require 'compeon/rack_tools/pipes/parse_env'
+require 'compeon/rack_tools/pipes/parse_token'
+require 'compeon/rack_tools/pipes/response'
