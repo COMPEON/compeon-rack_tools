@@ -2,7 +2,7 @@ require 'compeon/rack_tools/http_errors'
 
 module Compeon
   module RackTools
-    module MiddleWeres
+    module Middlewares
       class JSONAPIError
         def initialize(app)
           @app = app

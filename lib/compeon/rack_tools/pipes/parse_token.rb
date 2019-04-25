@@ -1,3 +1,5 @@
+require 'compeon/rack_tools/http_errors'
+
 module Compeon
   module RackTools
     module Pipes
