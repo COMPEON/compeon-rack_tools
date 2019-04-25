@@ -3,6 +3,13 @@ module Compeon
     module Pipes
       RESPONSE = lambda do |data, status: 200, header: {}|
         body = JSON.pretty_generate(data)
+
+        Compeon::RackTools::Pipes::LOG.call(
+          status: status,
+          header: header,
+          body: body
+        )
+
         [status, header, [body]]
       end
     end
