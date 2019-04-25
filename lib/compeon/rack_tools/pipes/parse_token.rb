@@ -15,7 +15,7 @@ module Compeon
       PARSE_TOKEN_BANG = lambda do |**rest|
         data = PARSE_TOKEN.call(**rest)
 
-        raise Rack::Tools::UnauthorizedError unless data[:token]
+        raise Compeon::RackTools::UnauthorizedError unless data[:token]
 
         data
       end

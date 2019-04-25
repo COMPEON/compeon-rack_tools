@@ -3,8 +3,8 @@ module Compeon
     module Pipes
       LintJSONAPIRequest = lambda do |type:|
         lambda do |body:, **rest|
-          raise Rack::Tools::UnprocessableEntityError unless body[:data][:type] == type
-          raise Rack::Tools::UnprocessableEntityError unless body[:data][:attributes].is_a?(Hash)
+          raise Compeon::RackTools::UnprocessableEntityError unless body[:data][:type] == type
+          raise Compeon::RackTools::UnprocessableEntityError unless body[:data][:attributes].is_a?(Hash)
 
           {
             body: body,

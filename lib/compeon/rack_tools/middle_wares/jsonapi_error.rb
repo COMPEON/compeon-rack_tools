@@ -1,3 +1,5 @@
+require 'compeon/rack_tools/http_errors'
+
 module Compeon
   module RackTools
     module MiddleWeres
@@ -8,7 +10,7 @@ module Compeon
 
         def call(env)
           @app.call(env)
-        rescue Rack::Tools::HTTPError => e
+        rescue Compeon::RackTools::HTTPError => e
           puts e.full_message
           json_api_error(e)
         rescue StandardError => e
