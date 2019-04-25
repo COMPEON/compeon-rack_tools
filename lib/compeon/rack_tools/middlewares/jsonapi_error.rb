@@ -12,19 +12,20 @@ module Compeon
           @app.call(env)
         rescue Compeon::RackTools::HTTPError => e
           puts e.full_message
-          json_api_error(e)
+          json_api_error_from_exception(e)
         rescue StandardError => e
           puts e.full_message
-          [500, {}, ['Unknown Error']]
+          json_api_error(500, 'Unknown Error')
         end
 
         private
 
         # TODO: implement `errors.details`
-        def json_api_error(exception)
-          status_code = exception.status_code
-          status_message = exception.status_message
+        def json_api_error_from_exception(exception)
+          json_api_error(exception.status_code, exception.status_message)
+        end
 
+        def json_api_error(status_code, status_message)
           body = JSON.pretty_generate(
             errors: [
               {
@@ -35,7 +36,7 @@ module Compeon
             ]
           )
 
-          [exception.status_code, {}, [body]]
+          [status_code, { 'Content-Type' => 'application/json' }, [body]]
         end
       end
     end
