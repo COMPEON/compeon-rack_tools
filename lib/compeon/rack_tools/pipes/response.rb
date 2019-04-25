@@ -4,6 +4,8 @@ module Compeon
       RESPONSE = lambda do |data, status: 200, header: {}|
         body = JSON.pretty_generate(data)
 
+        header['Content-Type'] ||= 'application/json'
+
         Compeon::RackTools::Pipes::LOG.call(
           status: status,
           header: header,
