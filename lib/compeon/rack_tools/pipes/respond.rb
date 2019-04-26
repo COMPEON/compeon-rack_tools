@@ -1,18 +1,14 @@
 module Compeon
   module RackTools
     module Pipes
-      RESPOND = lambda do |data:, status: 200, header: {}|
-        body = JSON.pretty_generate(data)
-
-        header['Content-Type'] ||= 'application/json'
-
+      RESPOND = lambda do |body:, status: 200, headers: {}|
         Compeon::RackTools::Pipes::LOG.call(
           status: status,
-          header: header,
+          header: headers,
           body: body
         )
 
-        [status, header, [body]]
+        [status, headers, [body]]
       end
     end
   end
