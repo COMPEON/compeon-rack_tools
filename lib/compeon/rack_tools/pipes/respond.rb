@@ -1,7 +1,7 @@
 module Compeon
   module RackTools
     module Pipes
-      RESPONSE = lambda do |data:, status: 200, header: {}|
+      RESPOND = lambda do |data:, status: 200, header: {}|
         body = JSON.pretty_generate(data)
 
         header['Content-Type'] ||= 'application/json'
