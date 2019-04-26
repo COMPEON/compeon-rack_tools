@@ -1,4 +1,4 @@
-require 'compeon/rack_tools/pipes/extract_attributes'
+require 'compeon/rack_tools/pipes/extract_json_api_attributes'
 require 'compeon/rack_tools/pipes/lint_jsonapi_request'
 require 'compeon/rack_tools/pipes/log'
 require 'compeon/rack_tools/pipes/parse_env'

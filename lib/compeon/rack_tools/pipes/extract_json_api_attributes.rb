@@ -1,7 +1,7 @@
 module Compeon
   module RackTools
     module Pipes
-      EXTRACT_ATTRIBUTES = lambda do |required_attributes:|
+      EXTRACT_JSON_API_ATTRIBUTES = lambda do |required_attributes:|
         lambda do |body:, **rest|
           request_attributes = body.dig(:data, :attributes)
 
