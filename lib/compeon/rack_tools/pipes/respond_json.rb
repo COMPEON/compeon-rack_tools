@@ -1,3 +1,5 @@
+require 'compeon/rack_tools/pipes/respond'
+
 module Compeon
   module RackTools
     module Pipes
