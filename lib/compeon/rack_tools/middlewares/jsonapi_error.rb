@@ -1,3 +1,7 @@
+# frozen_string_literal: true
+
+require 'json'
+
 require 'compeon/rack_tools/http_errors'
 
 module Compeon
@@ -10,11 +14,11 @@ module Compeon
 
         def call(env)
           @app.call(env)
-        rescue Compeon::RackTools::HTTPError => e
-          puts e.full_message
+        rescue HTTPError => e
+          warn e.full_message
           json_api_error_from_exception(e)
         rescue StandardError => e
-          puts e.full_message
+          warn e.full_message
           json_api_error(500, 'Unknown Error')
         end
 
