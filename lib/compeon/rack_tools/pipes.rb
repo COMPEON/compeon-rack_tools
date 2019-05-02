@@ -1,7 +1,3 @@
-require 'compeon/rack_tools/pipes/extract_json_api_attributes'
-require 'compeon/rack_tools/pipes/lint_jsonapi_request'
-require 'compeon/rack_tools/pipes/log'
-require 'compeon/rack_tools/pipes/parse_env'
-require 'compeon/rack_tools/pipes/parse_token'
-require 'compeon/rack_tools/pipes/respond'
-require 'compeon/rack_tools/pipes/respond_json'
+# frozen_string_literal: true
+
+Dir["#{__dir__}/pipes/**/*.rb"].each(&method(:require))

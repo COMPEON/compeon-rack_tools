@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'compeon/rack_tools/http_errors'
 require 'compeon/rack_tools/pipes/log'
 
@@ -7,11 +9,7 @@ module Compeon
       PARSE_ENV = lambda do |env|
         request = Rack::Request.new(env)
 
-        body = begin
-          JSON.parse(request.body.read, symbolize_names: true)
-        rescue JSON::ParserError
-          raise Compeon::RackTools::UnprocessableEntityError
-        end
+        body = request.body.read unless request.get? || request.head?
 
         request = {
           body: body,
