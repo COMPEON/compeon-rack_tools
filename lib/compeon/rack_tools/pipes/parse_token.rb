@@ -2,6 +2,15 @@
 
 require 'compeon/rack_tools/http_errors'
 
+begin
+  require 'compeon/access_token'
+rescue LoadError
+  raise <<~ERROR
+    You need to add `gem 'compeon-access_token'`,
+    to use `Compeon::RackTools::Pipes::PARSE_TOKEN`.
+  ERROR
+end
+
 module Compeon
   module RackTools
     module Pipes
