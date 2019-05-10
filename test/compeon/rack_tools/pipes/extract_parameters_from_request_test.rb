@@ -39,6 +39,16 @@ module Compeon
 
           assert_equal(extractor.call(request), request: request, param: 'present', param2: nil)
         end
+
+        def test_with_symbol_names
+          request = Rack::Request.new(
+            Rack::RACK_INPUT => '',
+            Rack::QUERY_STRING => 'param=present&param2=another-param'
+          )
+          extractor = Compeon::RackTools::Pipes::EXTRACT_PARAMETERS_FROM_REQUEST.call(parameter_names: %i[param param2])
+
+          assert_equal(extractor.call(request), request: request, param: 'present', param2: 'another-param')
+        end
       end
     end
   end

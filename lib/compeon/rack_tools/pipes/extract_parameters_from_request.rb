@@ -9,7 +9,7 @@ module Compeon
       EXTRACT_PARAMETERS_FROM_REQUEST = lambda do |parameter_names:, required: true|
         lambda do |request|
           parameters = parameter_names.each_with_object({}) do |name, result|
-            parameter = request.params[name]
+            parameter = request.params[name.to_s]
 
             raise Compeon::RackTools::UnprocessableEntityError, "Parameter `#{name}` is missing" if required && parameter.nil?
 
