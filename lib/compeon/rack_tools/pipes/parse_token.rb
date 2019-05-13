@@ -10,7 +10,7 @@ module Compeon
 
         raise Compeon::RackTools::UnauthorizedError unless token_string
 
-        Compeon::RackTools::Token.parse_access_token(code)
+        token = Compeon::RackTools::Token.parse_access_token(token_string)
 
         {
           token: token,
