@@ -11,7 +11,7 @@ module Compeon
         token = Compeon::RackTools::Token.parse_authorization_token(code)
 
         { token: token, **rest }
-      rescue Compeon::RackTools::Token::ParseError => e
+      rescue Compeon::RackTools::Token::ParseError
         raise Compeon::RackTools::UnprocessableEntityError
       end
     end

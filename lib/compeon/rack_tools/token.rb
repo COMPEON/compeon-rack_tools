@@ -39,8 +39,8 @@ module Compeon
           ENV.fetch('ENVIRONMENT')
         end
 
-        def oauth2_public_key
-          @oauth2_public_key ||= begin
+        def public_key
+          @public_key ||= begin
             env_subdomain = environment != 'production' ? ".#{environment}" : nil
             public_key_string = URI.parse("https://login#{env_subdomain}.compeon.de/public-key").read
             OpenSSL::PKey::RSA.new(public_key_string)
@@ -48,7 +48,7 @@ module Compeon
         end
 
         def parse_token(token, kind)
-          JWT.decode(token, oauth2_public_key, true, algorithm: 'RS256')[0].tap do |parsed_token|
+          JWT.decode(token, public_key, true, algorithm: 'RS256')[0].tap do |parsed_token|
             raise InvalidTokenKindError unless parsed_token['knd'] == kind
           end
         rescue JWT::DecodeError => e

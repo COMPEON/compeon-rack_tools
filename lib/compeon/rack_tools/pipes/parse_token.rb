@@ -10,13 +10,15 @@ module Compeon
 
         raise Compeon::RackTools::UnauthorizedError unless token_string
 
-        token = Compeon::AccessToken.parse(token_string)
+        Compeon::RackTools::Token.parse_access_token(code)
 
         {
           token: token,
           request: request,
           **rest
         }
+      rescue Compeon::RackTools::Token::ParseError
+        raise Compeon::RackTools::UnprocessableEntityError
       end
     end
   end

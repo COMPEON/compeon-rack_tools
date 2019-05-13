@@ -13,7 +13,7 @@ module Compeon
         def test_with_a_valid_code
           code = JWT.encode({ cid: 'client-id', knd: 'auth', uid: 'user-id' }, AUTH_KEY, 'RS256')
 
-          Compeon::RackTools::Token.stub :oauth2_public_key, AUTH_KEY.public_key do
+          Compeon::RackTools::Token.stub :public_key, AUTH_KEY.public_key do
             result = Compeon::RackTools::Pipes::PARSE_OAUTH2_AUTHORIZATION_CODE.call(code: code, other_parameter: :stub)
             token = result[:token]
 
