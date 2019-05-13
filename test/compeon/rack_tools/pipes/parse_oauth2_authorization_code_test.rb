@@ -25,11 +25,9 @@ module Compeon
         end
 
         def test_with_and_invalid_code
-          error_proc = proc { raise Compeon::RackTools::Token::ParseError }
-
-          Compeon::RackTools::Token.stub :parse_authorization_token, error_proc do
+          Compeon::RackTools::Token.stub :public_key, AUTH_KEY.public_key do
             assert_raises Compeon::RackTools::UnprocessableEntityError do
-              Compeon::RackTools::Pipes::PARSE_OAUTH2_AUTHORIZATION_CODE.call(code: 'code')
+              Compeon::RackTools::Pipes::PARSE_OAUTH2_AUTHORIZATION_CODE.call(code: 'invlid code')
             end
           end
         end
