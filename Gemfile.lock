@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/compeon/compeon-access_token.git
+  revision: 3966543be70a6c8c6238239e155d7afcb9387ce4
+  specs:
+    compeon-access_token (0.1.0)
+      jwt (~> 2.1)
+
 PATH
   remote: .
   specs:
@@ -45,6 +52,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
+  compeon-access_token!
   compeon-rack_tools!
   jwt
   minitest

@@ -5,10 +5,6 @@ require 'test_helper'
 require 'compeon/rack_tools/pipes/parse_token'
 
 module Compeon
-  class AccessToken
-    def self.parse(*); end
-  end
-
   module RackTools
     module Pipes
       class ParseTokenTest < Minitest::Test
@@ -22,13 +18,9 @@ module Compeon
           Compeon::RackTools::Token.public_key = nil
         end
 
-        def build_request(token: nil)
-          header = token ? { 'HTTP_AUTHORIZATION' => "token #{token}" } : {}
-          Rack::Request.new(header)
-        end
-
         def test_parse_token_ok
-          request = build_request(token: JWT.encode({ cid: 'client-id', knd: 'access', role: 'role', uid: 'user-id' }, AUTH_KEY, 'RS256'))
+          token = JWT.encode({ cid: 'client-id', knd: 'access', role: 'role', uid: 'user-id' }, AUTH_KEY, 'RS256')
+          request = Rack::Request.new('HTTP_AUTHORIZATION' => "token #{token}")
           result = Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
 
           assert_equal(request, result[:request])
@@ -42,7 +34,7 @@ module Compeon
 
         def test_parse_no_token
           assert_raises Compeon::RackTools::UnauthorizedError do
-            Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: build_request)
+            Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: Rack::Request.new({}))
           end
         end
       end
