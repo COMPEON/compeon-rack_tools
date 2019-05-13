@@ -14,6 +14,14 @@ module Compeon
       class ParseTokenTest < Minitest::Test
         AUTH_KEY = OpenSSL::PKey::RSA.new(512)
 
+        def setup
+          Compeon::RackTools::Token.public_key = AUTH_KEY.public_key
+        end
+
+        def teardown
+          Compeon::RackTools::Token.public_key = nil
+        end
+
         def build_request(token: nil)
           header = token ? { 'HTTP_AUTHORIZATION' => "token #{token}" } : {}
           Rack::Request.new(header)
@@ -21,11 +29,7 @@ module Compeon
 
         def test_parse_token_ok
           request = build_request(token: JWT.encode({ cid: 'client-id', knd: 'access', role: 'role', uid: 'user-id' }, AUTH_KEY, 'RS256'))
-          result = nil
-
-          Compeon::RackTools::Token.stub :public_key, AUTH_KEY.public_key do
-            result = Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
-          end
+          result = Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
 
           assert_equal(request, result[:request])
 

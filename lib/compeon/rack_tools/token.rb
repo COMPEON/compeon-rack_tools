@@ -13,6 +13,8 @@ module Compeon
       AuthorizationToken = Struct.new(:client_id, :user_id, :redirect_uri, keyword_init: true)
 
       class << self
+        attr_writer :public_key
+
         def parse_access_token(token)
           access_token = parse_token(token, 'access')
 
@@ -33,18 +35,18 @@ module Compeon
           )
         end
 
-        private
-
-        def environment
-          ENV.fetch('ENVIRONMENT')
-        end
-
         def public_key
           @public_key ||= begin
             env_subdomain = environment != 'production' ? ".#{environment}" : nil
             public_key_string = URI.parse("https://login#{env_subdomain}.compeon.de/public-key").read
             OpenSSL::PKey::RSA.new(public_key_string)
           end
+        end
+
+        private
+
+        def environment
+          ENV.fetch('ENVIRONMENT')
         end
 
         def parse_token(token, kind)
