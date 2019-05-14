@@ -22,7 +22,7 @@ module Compeon
           code = JWT.encode({ cid: 'client-id', knd: 'auth', uid: 'user-id' }, AUTH_KEY, 'RS256')
 
           result = Compeon::RackTools::Pipes::PARSE_OAUTH2_AUTHORIZATION_CODE.call(code: code, other_parameter: :stub)
-          token = result[:token]
+          token = result[:auth_token]
 
           assert_equal('client-id', token.client_id)
           assert_equal('user-id', token.user_id)

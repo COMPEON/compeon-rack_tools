@@ -8,11 +8,11 @@ module Compeon
   module RackTools
     module Pipes
       PARSE_OAUTH2_AUTHORIZATION_CODE = lambda do |code:, **rest|
-        token = Compeon::RackTools::Token.parse_authorization_token(code)
+        auth_token = Compeon::RackTools::Token.parse_authorization_token(code)
 
-        LOG.call("Parsed OAuth2 authorization code: #{token}")
+        LOG.call("Parsed OAuth2 authorization code: #{auth_token}")
 
-        { token: token, **rest }
+        { auth_token: auth_token, **rest }
       rescue Compeon::RackTools::Token::ParseError
         raise Compeon::RackTools::UnprocessableEntityError
       end
