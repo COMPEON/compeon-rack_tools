@@ -16,6 +16,8 @@ module Compeon
             result[name.to_sym] = parameter
           end
 
+          LOG.call("Extracted request parameters: #{parameters}")
+
           { **parameters, request: request }
         end
       end
