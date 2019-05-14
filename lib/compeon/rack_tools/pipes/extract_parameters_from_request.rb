@@ -7,7 +7,7 @@ module Compeon
   module RackTools
     module Pipes
       EXTRACT_PARAMETERS_FROM_REQUEST = lambda do |parameter_names:, required: true|
-        lambda do |request|
+        lambda do |request:, **rest|
           parameters = parameter_names.each_with_object({}) do |name, result|
             parameter = request.params[name.to_s]
 
@@ -18,7 +18,7 @@ module Compeon
 
           LOG.call("Extracted request parameters: #{parameters}")
 
-          { **parameters, request: request }
+          { **rest, **parameters, request: request }
         end
       end
     end
