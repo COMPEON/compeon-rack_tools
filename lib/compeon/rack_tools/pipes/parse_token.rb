@@ -2,15 +2,6 @@
 
 require 'compeon/rack_tools/http_errors'
 
-begin
-  require 'compeon/access_token'
-rescue LoadError
-  raise <<~ERROR
-    You need to add `gem 'compeon-access_token'`,
-    to use `Compeon::RackTools::Pipes::PARSE_TOKEN`.
-  ERROR
-end
-
 module Compeon
   module RackTools
     module Pipes
@@ -19,13 +10,15 @@ module Compeon
 
         raise Compeon::RackTools::UnauthorizedError unless token_string
 
-        token = Compeon::AccessToken.parse(token_string)
+        token = Compeon::RackTools::Token.parse_access_token(token_string)
 
         {
           token: token,
           request: request,
           **rest
         }
+      rescue Compeon::RackTools::Token::ParseError
+        raise Compeon::RackTools::UnprocessableEntityError
       end
     end
   end

@@ -8,30 +8,28 @@ module Compeon
   module RackTools
     module Pipes
       class ParseTokenTest < Minitest::Test
-        KEY = OpenSSL::PKey::RSA.new(512)
+        AUTH_KEY = OpenSSL::PKey::RSA.new(512)
 
         def setup
-          Compeon::AccessToken.public_key_string = KEY.public_key.to_s
+          Compeon::RackTools::Token.public_key = AUTH_KEY.public_key
         end
 
         def teardown
-          Compeon::AccessToken.public_key_string = nil
+          Compeon::RackTools::Token.public_key = nil
         end
 
         def test_parse_token_ok
-          token = JWT.encode({
-            exp: (Time.now.to_i + 10),
-            cid: 'compeon-marketplace',
-            knd: 'access',
-            role: 'role',
-            uid: '1234'
-          }, KEY, 'RS256')
+          token = JWT.encode({ cid: 'client-id', knd: 'access', role: 'role', uid: 'user-id' }, AUTH_KEY, 'RS256')
           request = Rack::Request.new('HTTP_AUTHORIZATION' => "token #{token}")
-
           result = Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
 
-          assert_instance_of Compeon::AccessToken, result[:token]
-          assert_equal request, result[:request]
+          assert_equal(request, result[:request])
+
+          token = result[:token]
+
+          assert_equal('client-id', token.client_id)
+          assert_equal('role', token.role)
+          assert_equal('user-id', token.user_id)
         end
 
         def test_parse_no_token

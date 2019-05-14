@@ -54,6 +54,7 @@ DEPENDENCIES
   bundler (~> 2.0)
   compeon-access_token!
   compeon-rack_tools!
+  jwt
   minitest
   pry
   rack-test
