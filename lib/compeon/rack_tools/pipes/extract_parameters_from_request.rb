@@ -13,7 +13,7 @@ module Compeon
 
             raise Compeon::RackTools::UnprocessableEntityError, "Parameter `#{name}` is missing" if required && parameter.nil?
 
-            result[name.to_sym] = parameter
+            result[name.tr('-', '_').to_sym] = parameter
           end
 
           LOG.call("Extracted request parameters: #{parameters}")
