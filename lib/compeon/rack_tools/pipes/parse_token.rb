@@ -18,7 +18,7 @@ module Compeon
           **rest
         }
       rescue Compeon::RackTools::Token::ParseError
-        raise Compeon::RackTools::UnprocessableEntityError
+        raise Compeon::RackTools::UnauthorizedError
       end
     end
   end
