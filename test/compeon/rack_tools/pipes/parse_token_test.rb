@@ -37,6 +37,14 @@ module Compeon
             Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: Rack::Request.new({}))
           end
         end
+
+        def test_parse_gibberish_token
+          request = Rack::Request.new({ 'HTTP_AUTHORIZATION' => 'token ulf' })
+
+          assert_raises Compeon::RackTools::UnauthorizedError do
+            Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
+          end
+        end
       end
     end
   end
