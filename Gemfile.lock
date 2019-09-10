@@ -2,7 +2,6 @@ PATH
   remote: .
   specs:
     compeon-rack_tools (0.1.0)
-      compeon-access_token
       rack (~> 2.0)
       rack-cors
 
@@ -48,6 +47,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler (~> 2.0)
+  compeon-access_token
   compeon-rack_tools!
   jwt
   minitest
