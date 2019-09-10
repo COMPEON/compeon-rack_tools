@@ -7,23 +7,21 @@ module Compeon
   module RackTools
     module Pipes
       PARSE_TOKEN = lambda do |key: nil|
+        raise "Invalid key of class `#{key.class}` given." unless key.is_a?(OpenSSL::PKey::RSA)
+
         lambda do |request:, **rest|
           token_string = request.env['HTTP_AUTHORIZATION']&.match(/^token (?<token>.*)/)&.named_captures&.[]('token')
 
           raise Compeon::RackTools::UnauthorizedError unless token_string
 
-          token = if key.nil?
-                    Compeon::RackTools::Token.parse_access_token(token_string)
-                  else
-                    Compeon::Token::Access.decode(encoded_token: token_string, key: key)
-                  end
+          token = Compeon::Token::Access.decode(encoded_token: token_string, key: key)
 
           {
             token: token,
             request: request,
             **rest
           }
-        rescue Compeon::RackTools::Token::ParseError, Compeon::Token::DecodeError
+        rescue Compeon::Token::DecodeError
           raise Compeon::RackTools::UnauthorizedError
         end
       end
