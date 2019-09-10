@@ -10,18 +10,14 @@ module Compeon
       class ParseTokenTest < Minitest::Test
         AUTH_KEY = OpenSSL::PKey::RSA.new(512)
 
-        def setup
-          Compeon::RackTools::Token.public_key = AUTH_KEY.public_key
-        end
-
-        def teardown
-          Compeon::RackTools::Token.public_key = nil
+        def parser
+          Compeon::RackTools::Pipes::PARSE_TOKEN.call(key: AUTH_KEY.public_key)
         end
 
         def test_parse_token_ok
           token = JWT.encode({ cid: 'client-id', knd: 'access', role: 'role', uid: 'user-id' }, AUTH_KEY, 'RS256')
           request = Rack::Request.new('HTTP_AUTHORIZATION' => "token #{token}")
-          result = Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
+          result = parser.call(request: request)
 
           assert_equal(request, result[:request])
 
@@ -34,15 +30,22 @@ module Compeon
 
         def test_parse_no_token
           assert_raises Compeon::RackTools::UnauthorizedError do
-            Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: Rack::Request.new({}))
+            parser.call(request: Rack::Request.new({}))
           end
         end
 
         def test_parse_gibberish_token
-          request = Rack::Request.new({ 'HTTP_AUTHORIZATION' => 'token ulf' })
+          request = Rack::Request.new('HTTP_AUTHORIZATION' => 'token ulf')
 
           assert_raises Compeon::RackTools::UnauthorizedError do
-            Compeon::RackTools::Pipes::PARSE_TOKEN.call(request: request)
+            parser.call(request: request)
+          end
+        end
+
+
+        def test_parse_no_key
+          assert_raises 'Expected key to be an instance of OpenSSL::PKey::RSA, got `NilClass`.' do
+            Compeon::RackTools::Pipes::PARSE_TOKEN.call(key: nil)
           end
         end
       end

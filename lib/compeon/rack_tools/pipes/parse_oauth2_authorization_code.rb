@@ -2,19 +2,23 @@
 
 require 'compeon/rack_tools/http_errors'
 require 'compeon/rack_tools/pipes/log'
-require 'compeon/rack_tools/token'
+require 'compeon/token'
 
 module Compeon
   module RackTools
     module Pipes
-      PARSE_OAUTH2_AUTHORIZATION_CODE = lambda do |code:, **rest|
-        auth_token = Compeon::RackTools::Token.parse_authorization_token(code)
+      PARSE_OAUTH2_AUTHORIZATION_CODE = lambda do |key:|
+        raise "Expected key to be an instance of OpenSSL::PKey::RSA, got `#{key.class}`." unless key.is_a?(OpenSSL::PKey::RSA)
 
-        LOG.call("Parsed OAuth2 authorization code: #{auth_token}")
+        lambda do |code:, **rest|
+          token = Compeon::Token::Authorization.decode(encoded_token: code, key: key)
 
-        { auth_token: auth_token, **rest }
-      rescue Compeon::RackTools::Token::ParseError
-        raise Compeon::RackTools::UnprocessableEntityError
+          LOG.call("Parsed OAuth2 authorization code: #{token}")
+
+          { auth_token: token, **rest }
+        rescue Compeon::Token::DecodeError
+          raise Compeon::RackTools::UnprocessableEntityError
+        end
       end
     end
   end
