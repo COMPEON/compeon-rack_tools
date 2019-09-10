@@ -33,7 +33,7 @@ module Compeon
         end
 
         def test_parse_no_key
-          assert_raises 'Invalid key of class `NilClass` given.' do
+          assert_raises 'Expected key to be an instance of OpenSSL::PKey::RSA, got `NilClass`.' do
             Compeon::RackTools::Pipes::PARSE_OAUTH2_AUTHORIZATION_CODE.call(key: nil)
           end
         end

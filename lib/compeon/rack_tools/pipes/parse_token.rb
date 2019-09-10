@@ -7,7 +7,7 @@ module Compeon
   module RackTools
     module Pipes
       PARSE_TOKEN = lambda do |key: nil|
-        raise "Invalid key of class `#{key.class}` given." unless key.is_a?(OpenSSL::PKey::RSA)
+        raise "Expected key to be an instance of OpenSSL::PKey::RSA, got `#{key.class}`." unless key.is_a?(OpenSSL::PKey::RSA)
 
         lambda do |request:, **rest|
           token_string = request.env.fetch('HTTP_AUTHORIZATION', '')[/^token (.*)/, 1]
