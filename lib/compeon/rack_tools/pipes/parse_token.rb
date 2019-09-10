@@ -10,7 +10,7 @@ module Compeon
         raise "Invalid key of class `#{key.class}` given." unless key.is_a?(OpenSSL::PKey::RSA)
 
         lambda do |request:, **rest|
-          token_string = request.env['HTTP_AUTHORIZATION']&.match(/^token (?<token>.*)/)&.named_captures&.[]('token')
+          token_string = request.env.fetch('HTTP_AUTHORIZATION', '')[/^token (.*)/, 1]
 
           raise Compeon::RackTools::UnauthorizedError unless token_string
 
