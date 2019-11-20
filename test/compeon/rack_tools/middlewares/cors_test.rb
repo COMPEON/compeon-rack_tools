@@ -29,7 +29,7 @@ module Compeon
           assert_equal 'http://example.com', response_header['Access-Control-Allow-Origin']
           assert_equal 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS', response_header['Access-Control-Allow-Methods']
           assert_equal 'link, per-page, total', response_header['Access-Control-Expose-Headers']
-          assert_equal '1728000', response_header['Access-Control-Max-Age']
+          assert_equal '7200', response_header['Access-Control-Max-Age']
           assert_equal 'authorization', response_header['Access-Control-Allow-Headers']
         end
 
@@ -43,7 +43,7 @@ module Compeon
           assert_equal 'http://example.com', response_header['Access-Control-Allow-Origin']
           assert_equal 'GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS', response_header['Access-Control-Allow-Methods']
           assert_equal 'link, per-page, total', response_header['Access-Control-Expose-Headers']
-          assert_equal '1728000', response_header['Access-Control-Max-Age']
+          assert_equal '7200', response_header['Access-Control-Max-Age']
           assert_equal 'true', response_header['Access-Control-Allow-Credentials']
           assert_equal 'authorization,content-type', response_header['Access-Control-Allow-Headers']
         end
