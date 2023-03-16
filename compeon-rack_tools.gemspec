@@ -24,7 +24,7 @@ Gem::Specification.new do |spec|
   end
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rack', '~> 2.0'
+  spec.add_dependency 'rack', '>= 2', '< 4'
   spec.add_dependency 'rack-cors'
 
   spec.add_development_dependency 'bundler', '~> 2.0'
